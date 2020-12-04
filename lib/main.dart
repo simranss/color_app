@@ -46,15 +46,17 @@ class _MyHomePageState extends State<MyHomePage> {
   String _hexCode = 'FFFFFF';
 
   Color _toColor(String hexValue) {
+    print('...........Entering the function............');
     try {
-      if (hexValue
-          .trim()
-          .length == 6) {
+      if (hexValue.trim().length == 6) {
+        print('..............value is proper..............');
         return new Color(int.parse(hexValue, radix: 16) + 0xFF000000);
       } else {
+        print('..............value is improper..............');
         return new Color(0xFFFFFFFF);
       }
     } catch(e) {
+      print('..............exception caught..............');
       return new Color(0xFFFFFFFF);
     }
   }
@@ -65,31 +67,42 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Text('#'),
-                  hintText: 'Hexadecimal RGB value',
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('#'),
+                SizedBox(width: 8,),
+                Builder(
+                  builder: (context) {
+                    return Expanded(
+                      child: TextField(
+                        autofocus: false,
+                        decoration: InputDecoration(
+                          hintText: 'Hexadecimal RGB value',
+                        ),
+                        onSubmitted: (value) {
+                          setState(() {
+                            _hexCode = value;
+                            print(_hexCode);
+                          });
+                        },
+                      ),
+                    );
+                  }
                 ),
-                onSubmitted: (value) {
-                  setState(() {
-                    _hexCode = value;
-                  });
-                },
-              ),
-              SizedBox(height: 32,),
-              Container(
-                height: 40,
-                width: 40,
-                color: _toColor(_hexCode),
-              )
-            ],
-          ),
+              ],
+            ),
+            SizedBox(height: 32,),
+            Container(
+              height: 80,
+              color: _toColor(_hexCode),
+            )
+          ],
         ),
       ),
     );
